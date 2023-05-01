@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
+
+* {
+ 
+  box-sizing: border-box;
+}
+
+.textarea {
+  position: absolute; 
+  top: 130px; 
+  width: 60%;
+  margin: 0 20%;
+  min-height: 30%;
+}
+
+.keyboard {
+  display: block;
+  border: 2px solid #e9730b;
+  position: fixed;
+  bottom: 20%;
+  width: 60%;
+  padding: 5px 0;
+  margin: auto 20%;
+  background: #4594b0;
+  box-shadow: 0 0 50px rgba(6, 111, 74, 0.5);
+  border-radius: 5px;
+  user-select: none;
+  transition: bottom 0.4s;
+  text-align: center;
+}
+
+.keyboard--hidden {
+  bottom: -100%;
+}
+
+.keyboard__keys {
+  text-align: center;
+}
+
+.keyboard__key {
+  height: 40px;
+  width: 6%;
+  margin: 0.3%;
+  border-radius: 5px;
+  border: none;
+  background: rgba(255, 255, 255, 0.23);
+  color: #ffffff;
+  font-size: 1.05rem;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: top;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.clearfix {
+  clear: both;
+  display: block;
+  width: 100%;
+}
+
+
+.keyboard__key:hover {
+  background: rgb(228, 111, 33, 0.7);
+}
+
+.keyboard__key:active {
+  background: #f1b46e;
+  transition: 0.3s all;
+  border-radius: 15px;
+  
+}
+.keyboard__key_service {
+  background: rgba(18, 37, 94, 0.23);
+  width: 12.3%;
+}
+.keyboard__key_service-small {
+  background: rgba(18, 37, 94, 0.23);
+}
+.active {
+  background: #f37012;
+  transition: 0.3s all;
+  border-radius: 15px;
+}
+
+.keyboard__key_space {
+  width: 45.6%;
+}
+
+.keyboard__key_capslock::after {
+  content: '';
+  top: 5px;
+  right: 5px;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #837b65;
+  border-radius: 50%;
+}
+
+.keyboard__key_capslock-light::after {
+  content: '';
+  top: 5px;
+  right: 5px;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #0b9f05;
+  border-radius: 50%;
+}
+
+.keyboard__key_dark {
+  background: rgba(0, 0, 0, 0.25);
+}
