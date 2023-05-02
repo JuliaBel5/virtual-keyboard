@@ -9,7 +9,7 @@
 
 .textarea {
   position: absolute; 
-  top: 130px; 
+  top: 110px; 
   width: 60%;
   margin: 0 20% 5%;
   min-height: 30%;
@@ -24,7 +24,7 @@
 
 .info {
   color:#055e7e;
-  margin: 570px auto 0;
+  margin: 530px auto 0;
   font-size: 24px;
   text-align: center;
   background: transparent;
@@ -32,7 +32,7 @@
 
 .info2 {
   color:#055e7e;
-  margin: 15px auto 5%;
+  margin: 10px auto;
   font-size: 24px;
   text-align: center;
   background: transparent;
@@ -41,8 +41,8 @@
 .keyboard {
   display: block;
   border: 2px solid #e9730b;
-  position: fixed;
-  bottom: 20%;
+  position: absolute; 
+  top: 280px;
   width: 60%;
   padding: 5px 0;
   margin: 5% 20% auto;
