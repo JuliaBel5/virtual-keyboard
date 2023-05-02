@@ -14,13 +14,19 @@ const arrCode = ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 
 let lang = 'En';
 let arrKey;
 
-if (lang === 'En') {
+
+
+if (lang === 'En' || !lang) {
   console.log('En');
+  lang ='En';
   arrKey = arrKeyEn;
+
 } else {
   console.log('Ru');
+  lang = 'Ru';
   arrKey = arrKeyRu;
 }
+
 
 function init() {
   const keyboard = document.createElement('div');
@@ -99,6 +105,7 @@ let ind;
 
 document.addEventListener('keydown', (event) => {
   if (event.getModifierState('Alt') && event.code === 'ControlLeft') {
+    console.log('1');
     if (lang === 'En') {
       lang = 'Ru';
       event.preventDefault();
@@ -107,6 +114,7 @@ document.addEventListener('keydown', (event) => {
         key[i].textContent = arrKey[i];
       }
     } else if (lang === 'Ru') {
+      console.log('11');
       lang = 'En';
       event.preventDefault();
       arrKey = arrKeyAfterShiftEn;
@@ -119,6 +127,7 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keydown', (event) => {
   if (event.getModifierState('Control') && event.code === 'AltLeft') {
+    console.log('2');
     if (lang === 'En') {
       lang = 'Ru';
       event.preventDefault();
@@ -127,6 +136,7 @@ document.addEventListener('keydown', (event) => {
         key[i].textContent = arrKey[i];
       }
     } else if (lang === 'Ru') {
+      console.log('22');
       lang = 'En';
       event.preventDefault();
       arrKey = arrKeyAfterShiftEn;
@@ -158,7 +168,7 @@ document.onkeydown = function (event) {
   document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.add('active');
 
   if (event.getModifierState('CapsLock')) {
-    console.log('Ctrl');
+    
     if (!((document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service-small')) || (document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service')))) {
       textarea.textContent = textarea.textContent.slice(0, ind) + document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).textContent.toUpperCase() + textarea.textContent.slice(ind);
       ind += 1;
@@ -203,14 +213,30 @@ document.onkeydown = function (event) {
     keyCapsLock.classList.toggle('keyboard__key_capslock-light');
   }
   if (event.code === 'ShiftLeft') {
+    if (! event.repeat) {
+    keyShiftLeft.classList.toggle('activated');
+    addShift();
+  }}
+
+  if (event.code === 'ShiftRight') {
+    if (! event.repeat) {
+    keyShiftLeft.classList.toggle('activated');
+    addShift();
+  }}
+};
+
+document.onkeyup = function (event) {
+  if (event.code === 'ShiftLeft') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
+}
+document.onkeyup = function (event) {
   if (event.code === 'ShiftRight') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
-};
+}
 
 document.onkeyup = function (event) {
   key.forEach((element) => {
@@ -268,19 +294,6 @@ for (const k of key) {
   };
 }
 
-keyAltLeft.onmousedown = function (event) {
-  event.preventDefault();
-  if (event.getModifierState('ShiftLeft') && lang === 'En') {
-    arrKey = arrKeyShiftEn;
-  } else if (event.getModifierState('ShiftLeft') && lang === 'Ru') arrKey = arrKeyShiftRu;
-};
-
-keyShiftLeft.onmousedown = function (event) {
-  event.preventDefault();
-  if (event.getModifierState('AltLeft') && lang === 'En') {
-    arrKey = arrKeyShiftEn;
-  } else if (event.getModifierState('AltLeft') && lang === 'Ru') arrKey = arrKeyShiftRu;
-};
 
 keyDelete.onmousedown = function (event) {
   event.preventDefault();
