@@ -25,12 +25,42 @@ if (lang === 'En') {
 
 
 document.addEventListener('keydown', function (event) {
-  if (event.altKey && event.code === 'ShiftLeft') {
+  if (event.getModifierState('Alt') && event.code === 'ControlLeft') {
+    if (lang === 'En') {
     lang = 'Ru';
     event.preventDefault();
-    init();
+    arrKey = arrKeyAfterShiftRu;
+    for (let i = 0; i < arrKey.length; i++) {
+      key[i].textContent = arrKey[i];
+    }
+    } else if (lang === 'Ru') {
+      lang === 'En'
+      event.preventDefault();
+      arrKey = arrKeyAfterShiftEn;
+      for (let i = 0; i < arrKey.length; i++) {
+        key[i].textContent = arrKey[i];
+    }
   }
-});
+}});
+
+document.addEventListener('keydown', function (event) {
+  if (event.getModifierState('Control') && event.code === 'AltLeft') {
+    if (lang === 'En') {
+      lang = 'Ru';
+      event.preventDefault();
+      arrKey = arrKeyAfterShiftRu;
+      for (let i = 0; i < arrKey.length; i++) {
+        key[i].textContent = arrKey[i];
+      }
+      } else if (lang === 'Ru') {
+        lang === 'En'
+        event.preventDefault();
+        arrKey = arrKeyAfterShiftEn;
+        for (let i = 0; i < arrKey.length; i++) {
+          key[i].textContent = arrKey[i];
+      }
+    }
+  }});
 
 
 function init() {
@@ -193,10 +223,12 @@ document.onkeydown = function (event) {
     keyCapsLock.classList.toggle('keyboard__key_capslock-light')
   }
   if (event.code === "ShiftLeft") {
-    keyShiftLeft.classList.toggle('activated');
+     keyShiftLeft.classList.toggle('activated');
+     addShift()
   }
   if (event.code === "ShiftRight") {
     keyShiftLeft.classList.toggle('activated');
+    addShift()
 
   }
 }
