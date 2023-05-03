@@ -220,7 +220,7 @@ document.addEventListener('keydown', (event) => {
 
   document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.add('active');
 
-  if (event.getModifierState('CapsLock')) {
+  if (key[29].classList.contains('keyboard__key_capslock-light')) {
     if (!((document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service-small')) || (document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service')))) {
       textarea.textContent = textarea.textContent.slice(0, ind) + document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).textContent.toUpperCase() + textarea.textContent.slice(ind);
       ind += 1;
