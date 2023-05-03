@@ -150,12 +150,68 @@ textarea.addEventListener('click', () => {
   ind = textarea.selectionStart;
   return ind;
 });
-/* eslint-disable */
-document.onkeydown = function (event) {
+function delNext() {
+  textarea.setSelectionRange(ind, ind);
+  if (ind < textarea.textContent.length) {
+    textarea.textContent = textarea.textContent.slice(0, ind) + textarea.textContent.slice(ind + 1);
+    textarea.focus();
+    textarea.setSelectionRange(ind, ind);
+  }
+}
+function delPrev() {
+  textarea.setSelectionRange(ind, ind);
+  if (ind > 0) {
+    textarea.textContent = textarea.textContent.slice(0, ind - 1) + textarea.textContent.slice(ind);
+    ind -= 1;
+    // textarea.selectionStart = textarea.selectionEnd =ind;
+    textarea.setSelectionRange(ind, ind);
+  }
+}
+function addInd() {
+  textarea.setSelectionRange(ind, ind);
+  if (ind < textarea.textContent.length) {
+    textarea.textContent = `${textarea.textContent.slice(0, ind)}\u0009${textarea.textContent.slice(ind)}`;
+  } else {
+    textarea.textContent += '\u0009';
+  }
+  ind += 1;
+  textarea.setSelectionRange(ind, ind);
+}
+
+function addEnter() {
+  textarea.setSelectionRange(ind, ind);
+  textarea.textContent = `${textarea.textContent.slice(0, ind)}\n${textarea.textContent.slice(ind)}`;
+  ind += 1;
+  textarea.setSelectionRange(ind, ind);
+}
+function addShift() {
+  if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
+    arrKey = arrKeyShiftEn;
+    for (let i = 0; i < arrKey.length; i += 1) {
+      key[i].textContent = arrKey[i];
+    }
+  } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
+    arrKey = arrKeyShiftRu;
+    for (let i = 0; i < arrKey.length; i += 1) {
+      key[i].textContent = arrKey[i];
+    }
+  } else if (!keyShiftLeft.classList.contains('activated')) {
+    if (lang === 'En') {
+      arrKey = arrKeyAfterShiftEn;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    } else if (lang === 'Ru') {
+      arrKey = arrKeyAfterShiftRu;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    }
+  }
+}
+document.addEventListener('keydown', (event) => {
   ind = textarea.selectionStart;
   event.preventDefault();
-  // textarea.focus();
-  // textarea.selectionStart = textarea.selectionEnd = ind;
   if (ind) {
     textarea.setSelectionRange(ind, ind);
   } else {
@@ -193,7 +249,6 @@ document.onkeydown = function (event) {
       textarea.setSelectionRange(ind, ind);
     }
   }
-  
   if (event.code === 'Delete') {
     delNext();
   }
@@ -208,7 +263,6 @@ document.onkeydown = function (event) {
   if (event.code === 'CapsLock') {
     keyCapsLock.classList.toggle('keyboard__key_capslock-light');
   }
-
   if (event.code === 'ShiftLeft') {
     if (!event.repeat) {
       keyShiftLeft.classList.toggle('activated');
@@ -222,32 +276,7 @@ document.onkeydown = function (event) {
       addShift();
     }
   }
-};
-function addShift() {
-  if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
-    arrKey = arrKeyShiftEn;
-    for (let i = 0; i < arrKey.length; i += 1) {
-      key[i].textContent = arrKey[i];
-    }
-  } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
-    arrKey = arrKeyShiftRu;
-    for (let i = 0; i < arrKey.length; i += 1) {
-      key[i].textContent = arrKey[i];
-    }
-  } else if (!keyShiftLeft.classList.contains('activated')) {
-    if (lang === 'En') {
-      arrKey = arrKeyAfterShiftEn;
-      for (let i = 0; i < arrKey.length; i += 1) {
-        key[i].textContent = arrKey[i];
-      }
-    } else if (lang === 'Ru') {
-      arrKey = arrKeyAfterShiftRu;
-      for (let i = 0; i < arrKey.length; i += 1) {
-        key[i].textContent = arrKey[i];
-      }
-    }
-  }
-}
+});
 
 document.addEventListener('keyup', (event) => {
   if (event.code === 'ShiftLeft') {
@@ -263,29 +292,27 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
-document.onkeyup = function () {
+document.addEventListener('keyup', () => {
   key.forEach((element) => {
     element.classList.remove('active');
   });
-};
+});
 
-document.onmouseup = function () {
+document.addEventListener('mouseup', () => {
   key.forEach((element) => {
     element.classList.remove('active');
   });
-};
+});
 
 key.forEach((element) => {
-  element.onmousedown = function () {
-    key.forEach((element) => {
-      element.classList.remove('active');
-    });
-    this.classList.add('active');
-  };
+  element.addEventListener('mousedown', (event) => {
+    element.classList.remove('active');
+    event.target.classList.add('active');
+  });
 });
 
-for (const k of key) {
-  k.onmousedown = function (event) {
+key.forEach((k) => {
+  k.addEventListener('mousedown', (event) => {
     event.preventDefault();
     ind = textarea.selectionStart;
     if (ind) {
@@ -295,7 +322,6 @@ for (const k of key) {
     }
 
     if (keyCapsLock.classList.contains('keyboard__key_capslock-light')) {
-      console.log('Caps');
       if (!(k.classList.contains('keyboard__key_service-small') || k.classList.contains('keyboard__key_service'))) {
         textarea.textContent = textarea.textContent.slice(0, ind)
         + k.textContent.toUpperCase() + textarea.textContent.slice(ind);
@@ -313,82 +339,46 @@ for (const k of key) {
       ind += 1;
       textarea.setSelectionRange(ind, ind);
     } else if (k.classList.contains('keyboard__key_arrow')) {
-      textarea.textContent = textarea.textContent.slice(0, ind) + k.textContent + textarea.textContent.slice(ind);
+      textarea.textContent = textarea.textContent.slice(0, ind)
+      + k.textContent + textarea.textContent.slice(ind);
       ind += 1;
       textarea.setSelectionRange(ind, ind);
     }
-  };
-}
+  });
+});
 
-keyDelete.onmousedown = function (event) {
+keyDelete.addEventListener('mousedown', (event) => {
   event.preventDefault();
   delNext();
-};
+});
 
-keyBackspace.onmousedown = function (event) {
+keyBackspace.addEventListener('mousedown', (event) => {
   event.preventDefault();
   delPrev();
-};
+});
 
-keyTab.onmousedown = function (event) {
+keyTab.addEventListener('mousedown', (event) => {
   event.preventDefault();
   addInd();
-};
+});
 
-keyEnter.onmousedown = function (event) {
+keyEnter.addEventListener('mousedown', (event) => {
   event.preventDefault();
   addEnter();
-};
+});
 
-keyShiftLeft.onclick = function (event) {
+keyShiftLeft.addEventListener('mousedown', (event) => {
   event.preventDefault();
   keyShiftLeft.classList.toggle('activated');
   addShift();
-};
+});
 
-keyShiftRight.onclick = function (event) {
+keyShiftRight.addEventListener('mousedown', (event) => {
   event.preventDefault();
   keyShiftRight.classList.toggle('activated');
   addShift();
-};
+});
 
-keyCapsLock.onmousedown = function () {
+keyCapsLock.addEventListener('mousedown', () => {
   keyCapsLock.classList.toggle('keyboard__key_capslock-light');
-};
-
-function delPrev() {
-  textarea.setSelectionRange(ind, ind);
-  if (ind > 0) {
-    textarea.textContent = textarea.textContent.slice(0, ind - 1) + textarea.textContent.slice(ind);
-    ind -= 1;
-    // textarea.selectionStart = textarea.selectionEnd =ind;
-    textarea.setSelectionRange(ind, ind);
-  }
-}
-
-function delNext() {
-  textarea.setSelectionRange(ind, ind);
-  if (ind < textarea.textContent.length) {
-    textarea.textContent = textarea.textContent.slice(0, ind) + textarea.textContent.slice(ind + 1);
-    textarea.focus();
-    // textarea.selectionStart = textarea.selectionEnd =ind;
-    textarea.setSelectionRange(ind, ind);
-  }
-}
-function addInd() {
-  textarea.setSelectionRange(ind, ind);
-  if (ind < textarea.textContent.length) {
-    textarea.textContent = `${textarea.textContent.slice(0, ind)}\u0009${textarea.textContent.slice(ind)}`;
-  } else {
-    textarea.textContent += '\u0009';
-  }
-  ind += 1;
-  textarea.setSelectionRange(ind, ind);
-}
-
-function addEnter() {
-  textarea.setSelectionRange(ind, ind);
-  textarea.textContent = `${textarea.textContent.slice(0, ind)}\n${textarea.textContent.slice(ind)}`;
-  ind += 1;
-  textarea.setSelectionRange(ind, ind);
-}
+});
