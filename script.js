@@ -20,11 +20,11 @@ function setLocalSetStorage() {
 window.addEventListener('beforeunload', setLocalSetStorage);
 
 function getLocalStorage() {
-  lang = localStorage.getItem('lang')
+  lang = localStorage.getItem('lang');
   if (!localStorage.getItem('lang')) {
-    lang = "En";
+    lang = 'En';
     console.log(lang);
-}
+  }
 }
 getLocalStorage();
 
@@ -46,17 +46,17 @@ function init() {
   const info2 = document.createElement('div');
 
   let kboard = '';
-  for (let i = 0; i < arrKey.length; i += 1) {
+  for (let i = 0; i < arrKey.length; i++) {
     if (i === 13) {
-      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="` + 'Backspace' + '" >' + 'Backspace' + '</div>' + '<div class = "clearfix"></div>';
+      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="Backspace" >Backspace</div><div class = "clearfix"></div>`;
     } else if (i === 28) {
-      kboard = `${kboard}<div class = "clearfix"></div>` + '<div class="keyboard__key keyboard__key_service keyboard__key_capslock" data="' + 'CapsLock' + '" >' + 'Caps Lock' + '</div>';
+      kboard = `${kboard}<div class = "clearfix"></div><div class="keyboard__key keyboard__key_service keyboard__key_capslock" data="CapsLock" >Caps Lock</div>`;
     } else if (i === 39) {
-      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="` + 'Enter' + '" >' + 'Enter' + '</div>' + '<div class = "clearfix"></div>' + '<div class="keyboard__key keyboard__key_service" data="' + 'ShiftLeft' + '" >' + 'Shift' + '</div>';
+      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="Enter" >Enter</div><div class = "clearfix"></div><div class="keyboard__key keyboard__key_service" data="ShiftLeft" >Shift</div>`;
     } else if (i === 50) {
-      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="` + 'ShiftRight' + '" >' + 'Shift' + '</div>' + '<div class = "clearfix"></div>';
+      kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="ShiftRight" >Shift</div><div class = "clearfix"></div>`;
     } else if (i === 53) {
-      kboard = `${kboard}<div class="keyboard__key keyboard__key_space" data="` + 'Space' + '" >' + ' ' + '</div>';
+      kboard = `${kboard}<div class="keyboard__key keyboard__key_space" data="Space" ></div>`;
     }
 
     kboard += `<div class="keyboard__key" data="${arrCode[i]}" >${arrKey[i]}</div>`;
@@ -104,11 +104,6 @@ const keyEnter = document.querySelector('.keyboard .keyboard__key[data="Enter"]'
 const keyShiftLeft = document.querySelector('.keyboard .keyboard__key[data="ShiftLeft"]');
 const keyShiftRight = document.querySelector('.keyboard .keyboard__key[data="ShiftRight"]');
 const keyCapsLock = document.querySelector('.keyboard .keyboard__key[data="CapsLock"]');
-const keyCtrlLeft = document.querySelector('.keyboard .keyboard__key[data="ControlLeft"]');
-const keyCtrlRight = document.querySelector('.keyboard .keyboard__key[data="ControlRight"]');
-const keyAltLeft = document.querySelector('.keyboard .keyboard__key[data="AltLeft"]');
-const keyAltRight = document.querySelector('.keyboard .keyboard__key[data="AltRight"]');
-
 const key = document.querySelectorAll('.keyboard__key');
 const textarea = document.querySelector('.textarea');
 let ind;
@@ -222,43 +217,72 @@ document.onkeydown = function (event) {
     addEnter();
   }
 
+  function addShift() {
+    if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
+      console.log('shiftEn');
+      arrKey = arrKeyShiftEn;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
+      arrKey = arrKeyShiftRu;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    } else if (!keyShiftLeft.classList.contains('activated')) {
+      if (lang === 'En') {
+        arrKey = arrKeyAfterShiftEn;
+        for (let i = 0; i < arrKey.length; i += 1) {
+          key[i].textContent = arrKey[i];
+        }
+      } else if (lang === 'Ru') {
+        arrKey = arrKeyAfterShiftRu;
+        for (let i = 0; i < arrKey.length; i += 1) {
+          key[i].textContent = arrKey[i];
+        }
+      }
+    }
+  }
+
   if (event.code === 'CapsLock') {
     keyCapsLock.classList.toggle('keyboard__key_capslock-light');
   }
   if (event.code === 'ShiftLeft') {
-    if (! event.repeat) {
-    keyShiftLeft.classList.toggle('activated');
-    addShift();
-  }}
+    if (!event.repeat) {
+      keyShiftLeft.classList.toggle('activated');
+      addShift();
+    }
+  }
 
   if (event.code === 'ShiftRight') {
-    if (! event.repeat) {
-    keyShiftLeft.classList.toggle('activated');
-    addShift();
-  }}
+    if (!event.repeat) {
+      keyShiftLeft.classList.toggle('activated');
+      addShift();
+    }
+  }
 };
 
-document.addEventListener('keyup',function (event) {
+document.addEventListener('keyup', function (event) {
   if (event.code === 'ShiftLeft') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
-})
+});
 
-document.addEventListener('keyup',function (event) {
+document.addEventListener('keyup', function (event) {
   if (event.code === 'ShiftRight') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
-})
+});
 
-document.onkeyup = function (event) {
+document.onkeyup = function () {
   key.forEach((element) => {
     element.classList.remove('active');
   });
 };
 
-document.onmouseup = function (event) {
+document.onmouseup = function () {
   key.forEach((element) => {
     element.classList.remove('active');
   });
@@ -276,13 +300,13 @@ key.forEach((element) => {
 });
 
 for (const k of key) {
-  k.onclick = function (event) {
+  k.onmousedown = function (event) {
     event.preventDefault();
     ind = textarea.selectionStart;
     if (ind) {
       textarea.setSelectionRange(ind, ind);
     } else {
-      ind === 0;
+      ind = 0;
     }
 
     if (keyCapsLock.classList.contains('keyboard__key_capslock-light')) {
@@ -343,34 +367,7 @@ keyShiftRight.onclick = function (event) {
   addShift();
 };
 
-function addShift() {
-  if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
-    console.log('shiftEn');
-    arrKey = arrKeyShiftEn;
-    for (let i = 0; i < arrKey.length; i++) {
-      key[i].textContent = arrKey[i];
-    }
-  } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
-    arrKey = arrKeyShiftRu;
-    for (let i = 0; i < arrKey.length; i++) {
-      key[i].textContent = arrKey[i];
-    }
-  } else if (!keyShiftLeft.classList.contains('activated')) {
-    if (lang === 'En') {
-      arrKey = arrKeyAfterShiftEn;
-      for (let i = 0; i < arrKey.length; i++) {
-        key[i].textContent = arrKey[i];
-      }
-    } else if (lang === 'Ru') {
-      arrKey = arrKeyAfterShiftRu;
-      for (let i = 0; i < arrKey.length; i++) {
-        key[i].textContent = arrKey[i];
-      }
-    }
-  }
-}
-
-keyCapsLock.onmousedown = function (event) {
+keyCapsLock.onmousedown = function () {
   keyCapsLock.classList.toggle('keyboard__key_capslock-light');
 };
 
@@ -401,10 +398,8 @@ function addInd() {
   } else {
     textarea.textContent += '\u0009';
   }
-  console.log(ind);
   ind += 1;
   textarea.setSelectionRange(ind, ind);
-  console.log(ind);
 }
 
 function addEnter() {
@@ -413,25 +408,4 @@ function addEnter() {
   ind += 1;
   textarea.setSelectionRange(ind, ind);
   console.log(ind);
-}
-
-function getPointerPos(el) {
-  if (el.selectionStart) {
-    return el.selectionStart;
-  } if (document.selection) {
-    el.focus();
-
-    const r = document.selection.createRange();
-    if (r == null) {
-      return 0;
-    }
-
-    const re = el.createTextRange();
-    const rc = re.duplicate();
-    re.moveToBookmark(r.getBookmark());
-    rc.setEndPoint('EndToStart', re);
-
-    return rc.text.length;
-  }
-  return 0;
 }
