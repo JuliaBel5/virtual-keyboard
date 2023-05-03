@@ -238,18 +238,19 @@ document.onkeydown = function (event) {
   }}
 };
 
-document.onkeyup = function (event) {
+document.addEventListener('keyup',function (event) {
   if (event.code === 'ShiftLeft') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
-}
-document.onkeyup = function (event) {
+})
+
+document.addEventListener('keyup',function (event) {
   if (event.code === 'ShiftRight') {
     keyShiftLeft.classList.toggle('activated');
     addShift();
   }
-}
+})
 
 document.onkeyup = function (event) {
   key.forEach((element) => {
