@@ -217,37 +217,12 @@ document.onkeydown = function (event) {
     addEnter();
   }
 
-  function addShift() {
-    if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
-      console.log('shiftEn');
-      arrKey = arrKeyShiftEn;
-      for (let i = 0; i < arrKey.length; i += 1) {
-        key[i].textContent = arrKey[i];
-      }
-    } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
-      arrKey = arrKeyShiftRu;
-      for (let i = 0; i < arrKey.length; i += 1) {
-        key[i].textContent = arrKey[i];
-      }
-    } else if (!keyShiftLeft.classList.contains('activated')) {
-      if (lang === 'En') {
-        arrKey = arrKeyAfterShiftEn;
-        for (let i = 0; i < arrKey.length; i += 1) {
-          key[i].textContent = arrKey[i];
-        }
-      } else if (lang === 'Ru') {
-        arrKey = arrKeyAfterShiftRu;
-        for (let i = 0; i < arrKey.length; i += 1) {
-          key[i].textContent = arrKey[i];
-        }
-      }
-    }
-  }
 
-  if (event.code === 'CapsLock') {
+if (event.code === 'CapsLock') {
     keyCapsLock.classList.toggle('keyboard__key_capslock-light');
   }
-  if (event.code === 'ShiftLeft') {
+
+if (event.code === 'ShiftLeft') {
     if (!event.repeat) {
       keyShiftLeft.classList.toggle('activated');
       addShift();
@@ -259,8 +234,35 @@ document.onkeydown = function (event) {
       keyShiftLeft.classList.toggle('activated');
       addShift();
     }
+  };
+}
+function addShift() {
+  if ((keyShiftLeft.classList.contains('activated') && lang === 'En') || (keyShiftRight.classList.contains('activated') && lang === 'En')) {
+    console.log('shiftEn');
+    arrKey = arrKeyShiftEn;
+    for (let i = 0; i < arrKey.length; i += 1) {
+      key[i].textContent = arrKey[i];
+    }
+  } else if ((keyShiftLeft.classList.contains('activated') && lang === 'Ru') || (keyShiftRight.classList.contains('activated') && lang === 'Ru')) {
+    arrKey = arrKeyShiftRu;
+    for (let i = 0; i < arrKey.length; i += 1) {
+      key[i].textContent = arrKey[i];
+    }
+  } else if (!keyShiftLeft.classList.contains('activated')) {
+    if (lang === 'En') {
+      arrKey = arrKeyAfterShiftEn;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    } else if (lang === 'Ru') {
+      arrKey = arrKeyAfterShiftRu;
+      for (let i = 0; i < arrKey.length; i += 1) {
+        key[i].textContent = arrKey[i];
+      }
+    }
   }
-};
+}
+
 
 document.addEventListener('keyup', function (event) {
   if (event.code === 'ShiftLeft') {
