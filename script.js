@@ -1,5 +1,5 @@
 /* eslint-disable */
-console.log('Дорогие проверяющие! Очень прошу проверить мою работу как можно позже, в среду вечером или четверг, порпобую что-нибудь доделать. Спасибо за понимание!');
+console.log('Дорогие проверяющие! Очень прошу проверить мою работу как можно позже, в среду вечером или четверг, попробую что-нибудь доделать. Спасибо за понимание!');
 
 const arrKeyEn = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '▲', 'Ctrl', 'Win', 'Alt', 'Alt', '◄', '▼', '►', 'Ctrl'];
 const arrKeyRu = ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Del', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', '▲', 'Ctrl', 'Win', 'Alt', 'Alt', '◄', '▼', '►', 'Ctrl'];
@@ -11,22 +11,32 @@ const arrKeyAfterShiftRu = ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '
 
 const arrCode = ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'Delete', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ControlLeft', 'MetaLeft', 'AltLeft', 'AltRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'ControlRight'];
 
-let lang = 'En';
+let lang;
 let arrKey;
 
+function setLocalSetStorage() {
+  localStorage.setItem('lang', lang);
+}
+window.addEventListener('beforeunload', setLocalSetStorage);
 
+function getLocalStorage() {
+  lang = localStorage.getItem('lang')
+  if (!localStorage.getItem('lang')) {
+    lang = "En";
+    console.log(lang);
+}
+}
+getLocalStorage();
 
 if (lang === 'En' || !lang) {
   console.log('En');
-  lang ='En';
+  lang = 'En';
   arrKey = arrKeyEn;
-
 } else {
   console.log('Ru');
   lang = 'Ru';
   arrKey = arrKeyRu;
 }
-
 
 function init() {
   const keyboard = document.createElement('div');
@@ -36,7 +46,7 @@ function init() {
   const info2 = document.createElement('div');
 
   let kboard = '';
-  for (let i = 0; i < arrKey.length; i++) {
+  for (let i = 0; i < arrKey.length; i += 1) {
     if (i === 13) {
       kboard = `${kboard}<div class="keyboard__key keyboard__key_service" data="` + 'Backspace' + '" >' + 'Backspace' + '</div>' + '<div class = "clearfix"></div>';
     } else if (i === 28) {
@@ -123,6 +133,8 @@ document.addEventListener('keydown', (event) => {
       }
     }
   }
+  setLocalSetStorage();
+  return lang;
 });
 
 document.addEventListener('keydown', (event) => {
@@ -145,6 +157,8 @@ document.addEventListener('keydown', (event) => {
       }
     }
   }
+  setLocalSetStorage();
+  return lang;
 });
 
 textarea.addEventListener('click', () => {
@@ -161,14 +175,13 @@ document.onkeydown = function (event) {
   if (ind) {
     textarea.setSelectionRange(ind, ind);
   } else {
-    ind === 0;
+    ind = 0;
   }
   console.log(ind);
 
   document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.add('active');
 
   if (event.getModifierState('CapsLock')) {
-    
     if (!((document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service-small')) || (document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).classList.contains('keyboard__key_service')))) {
       textarea.textContent = textarea.textContent.slice(0, ind) + document.querySelector(`.keyboard .keyboard__key[data="${event.code}"]`).textContent.toUpperCase() + textarea.textContent.slice(ind);
       ind += 1;
